@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pemeriksa GeoJSON | Forest Guardian</title>
+<style>
+:root{--g:#1b4332;--g2:#2d6a4f;--gold:#c9a24b;--bg:#f5f4ee;--line:#e3e6df;--mut:#5f6f66;--bad:#b3402f;--ok:#14402b}
+*{box-sizing:border-box}body{margin:0;font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:#13241b}
+main{max-width:860px;margin:0 auto;padding:28px 18px 60px}h1{font-family:Georgia,serif;font-weight:400;font-size:30px;margin:0 0 4px}.sub{color:var(--mut);margin:0 0 22px}
+.drop{border:2px dashed #b9cfc1;border-radius:20px;background:#fff;padding:34px 18px;text-align:center;cursor:pointer;transition:.15s}.drop.ov,.drop:hover{border-color:var(--g2);background:#eef6f1}.drop b{display:block;font-size:17px}.drop small{color:var(--mut)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:16px}.card h2{font-size:16px;margin:0 0 10px}
+.v{display:flex;gap:12px;align-items:center;padding:14px 18px;border-radius:14px;font-weight:700;margin-top:16px}.v.ok{background:#e3f3e9;color:var(--ok)}.v.no{background:#fdecea;color:#7c2418}.v.wr{background:#fbf3dc;color:#5f4708}
+.v i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;flex:none}.ok i{background:var(--g2)}.no i{background:var(--bad)}.wr i{background:#b0801f}
+ul.m{list-style:none;margin:0;padding:0;display:grid;gap:6px}ul.m li{padding:8px 12px;border-radius:10px;background:#f9faf7;border:1px solid var(--line);font-size:14px}ul.m li.b{background:#fdecea;border-color:#f3c7c0}ul.m li.w{background:#fbf3dc;border-color:#ecd9a3}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.k{background:#f4f7f3;border-radius:12px;padding:10px 14px}.k small{color:var(--mut);display:block;font-size:12px;text-transform:uppercase;letter-spacing:.5px}.k b{font-size:20px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut);padding:6px 8px;border-bottom:1px solid var(--line)}td{padding:6px 8px;border-bottom:1px solid #f0f2ee;vertical-align:top}td code{background:#eef3ee;padding:1px 6px;border-radius:6px}
+.bar{height:6px;background:#e9eee9;border-radius:9px;overflow:hidden;min-width:70px}.bar i{display:block;height:100%;background:var(--g2)}
+button.btn{background:var(--g2);color:#fff;border:0;border-radius:11px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}button.btn:hover{background:var(--g)}
+.hide{display:none}.note{color:var(--mut);font-size:13px}
+</style></head><body><main>
+<h1>Pemeriksa GeoJSON</h1>
+<p class="sub">Periksa berkas GeoJSON sebelum diunggah ke peta. Semua diproses di komputer Anda, tidak ada yang dikirim ke server.</p>
+<div class="drop" id="drop"><b>Seret berkas .geojson / .json ke sini</b><small>atau klik untuk memilih berkas</small></div>
+<input type="file" id="fin" accept=".geojson,.json,application/json,application/geo+json" hidden>
+<div id="out"></div>
+<script>
+var $=function(i){return document.getElementById(i)},esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+var drop=$("drop"),fin=$("fin"),out=$("out"),CUR=null;
+drop.onclick=function(){fin.click()};fin.onchange=function(){if(fin.files[0])run(fin.files[0])};
+drop.ondragover=function(e){e.preventDefault();drop.classList.add("ov")};drop.ondragleave=function(){drop.classList.remove("ov")};
+drop.ondrop=function(e){e.preventDefault();drop.classList.remove("ov");if(e.dataTransfer.files[0])run(e.dataTransfer.files[0])};
+function cls(t){return /Polygon/.test(t)?"Poligon":/LineString/.test(t)?"Garis":/Point/.test(t)?"Titik":""}
+function run(f){var rd=new FileReader();rd.onload=function(){check(f,String(rd.result).replace(/^﻿/,""))};rd.readAsText(f)}
+function check(file,txt){
+  var errs=[],warns=[],info={},j;
+  try{j=JSON.parse(txt)}catch(e){return show(file,{errs:["Bukan JSON yang valid: "+e.message+". Buka berkas di editor teks dan periksa apakah rusak/terpotong."],warns:[],info:{}})}
+  if(j&&j.crs&&j.crs.properties&&j.crs.properties.name&&!/(4326|CRS84)/i.test(j.crs.properties.name))errs.push('Sistem koordinat berkas "'+j.crs.properties.name+'". Wajib WGS 84 (EPSG:4326). Ekspor ulang dari QGIS/ArcGIS.');
+  var feats=[];if(j.type==="FeatureCollection"&&Array.isArray(j.features))feats=j.features;else if(j.type==="Feature")feats=[j];else if(cls(j.type||"")||j.type==="GeometryCollection")feats=[{type:"Feature",properties:{},geometry:j}];else errs.push("Bukan GeoJSON: tidak ada FeatureCollection, Feature, atau geometri.");
+  var types={},bb=[180,90,-180,-90],bad=0,empty=0,n=0,keys={},ptsN=0,vals={};
+  function walk(c){if(typeof c[0]==="number"){ptsN++;var x=c[0],y=c[1];if(x<-180||x>180||y<-90||y>90)bad++;if(x<bb[0])bb[0]=x;if(y<bb[1])bb[1]=y;if(x>bb[2])bb[2]=x;if(y>bb[3])bb[3]=y;if(c.length>2)info.z=1}else for(var i=0;i<c.length;i++)walk(c[i])}
+  feats.forEach(function(f){if(!f||!f.geometry||!f.geometry.type){empty++;return}var g=f.geometry,gs=g.type==="GeometryCollection"?(g.geometries||[]):[g];gs.forEach(function(x){var c=cls(x.type);if(!c||!x.coordinates){empty++;return}types[c]=(types[c]||0)+1;n++;walk(x.coordinates)});
+    var p=f.properties||{};for(var k in p){keys[k]=keys[k]||{n:0,s:"",v:{}};if(p[k]!==null&&p[k]!==""){keys[k].n++;if(!keys[k].s)keys[k].s=String(p[k]).slice(0,40);if(typeof p[k]==="string"&&Object.keys(keys[k].v).length<40)keys[k].v[p[k]]=1}}});
+  if(!n&&!errs.length)errs.push("Tidak ada objek dengan geometri yang bisa ditampilkan.");
+  if(n){if(bad)errs.push("Koordinat di luar rentang derajat ("+bad+" titik). Kemungkinan: (1) memakai UTM/CRS lain → ekspor ulang ke EPSG:4326; atau (2) urutan tertukar → GeoJSON wajib [bujur, lintang].");
+    else{var cx=(bb[0]+bb[2])/2,cy=(bb[1]+bb[3])/2;if(!(cx>=90&&cx<=145&&cy>=-12&&cy<=8))warns.push("Lokasi data di luar wilayah Indonesia (pusat "+cx.toFixed(2)+", "+cy.toFixed(2)+"). Periksa sistem koordinatnya.")}}
+  if(empty)warns.push(empty+" objek tanpa geometri akan dilewati.");
+  if(file.size>15*1048576)warns.push("Ukuran "+(file.size/1048576).toFixed(1)+" MB cukup besar dan akan lambat dimuat pengunjung. Pakai tombol \"Unduh versi ringan\" di bawah atau sederhanakan geometri di QGIS (Simplify).");
+  if(info.z)warns.push("Koordinat memuat nilai ketinggian (Z). Tidak dipakai; versi ringan akan membuangnya.");
+  var keyN=Object.keys(keys).length;if(n&&!keyN)warns.push("Objek tidak punya atribut (properties). Popup akan kosong. Tambahkan kolom seperti nama, jenis, tanggal.");
+  info.types=types;info.n=n;info.bb=bb;info.keys=keys;info.size=file.size;info.j=j;info.ptsN=ptsN;
+  show(file,{errs:errs,warns:warns,info:info})
+}
+function show(file,r){
+  CUR=r;var i=r.info,h='<div class="v '+(r.errs.length?"no":r.warns.length?"wr":"ok")+'"><i>'+(r.errs.length?"!":r.warns.length?"•":"✓")+"</i><span>"+(r.errs.length?"Berkas belum bisa diunggah, perbaiki dulu":r.warns.length?"Bisa diunggah, tetapi perhatikan catatan":"Siap diunggah")+"</span></div>";
+  if(r.errs.length||r.warns.length)h+='<div class="card"><ul class="m">'+r.errs.map(function(e){return'<li class="b">'+esc(e)+"</li>"}).join("")+r.warns.map(function(e){return'<li class="w">'+esc(e)+"</li>"}).join("")+"</ul></div>";
+  if(i.n){h+='<div class="card"><h2>Ringkasan</h2><div class="g"><div class="k"><small>Berkas</small><b style="font-size:14px;word-break:break-all">'+esc(file.name)+'</b></div><div class="k"><small>Ukuran</small><b>'+(file.size/1048576).toFixed(2)+' MB</b></div><div class="k"><small>Objek</small><b>'+i.n.toLocaleString("id-ID")+'</b></div><div class="k"><small>Jenis</small><b style="font-size:15px">'+Object.keys(i.types).map(function(t){return t+" ("+i.types[t]+")"}).join(", ")+'</b></div><div class="k"><small>Jangkauan</small><b style="font-size:13px">'+i.bb.map(function(v){return v.toFixed(3)}).join(", ")+"</b></div></div></div>";
+    var rows=Object.keys(i.keys).map(function(k){var o=i.keys[k],pct=Math.round(o.n/i.n*100),nv=Object.keys(o.v).length;return"<tr><td><code>"+esc(k)+"</code></td><td>"+esc(o.s)+'</td><td><div class="bar"><i style="width:'+pct+'%"></i></div><small>'+pct+"% terisi</small></td><td>"+(nv>=2&&nv<=24?'<span class="note">'+nv+" nilai · cocok untuk pewarnaan</span>":"")+"</td></tr>"}).join("");
+    h+='<div class="card"><h2>Kolom atribut ('+Object.keys(i.keys).length+')</h2>'+(rows?"<table><tr><th>Kolom</th><th>Contoh isi</th><th>Terisi</th><th></th></tr>"+rows+"</table>":'<p class="note">Tidak ada kolom.</p>')+'<p class="note">Kolom yang namanya <code>nama</code>, <code>judul</code>, <code>lokasi</code>, <code>jenis</code>, <code>tanggal</code>, <code>provinsi</code>, <code>foto</code>, <code>tautan</code> dikenali otomatis oleh peta.</p></div>';
+    h+='<div class="card"><h2>Versi ringan</h2><p class="note">Membulatkan koordinat ke 5 desimal (±1 meter), membuang ketinggian (Z) dan spasi. Biasanya mengecilkan berkas 30-60%.</p><button class="btn" id="lite">Unduh versi ringan</button></div>'}
+  out.innerHTML=h;var b=$("lite");if(b)b.onclick=function(){light(file)}
+}
+function light(file){var j=JSON.parse(JSON.stringify(CUR.info.j));function r(c){if(typeof c[0]==="number")return[+c[0].toFixed(5),+c[1].toFixed(5)];return c.map(r)}
+  (j.features||[j]).forEach(function(f){var g=f.geometry||f;if(g&&g.coordinates)g.coordinates=r(g.coordinates);if(g&&g.geometries)g.geometries.forEach(function(x){x.coordinates=r(x.coordinates)})});
+  var blob=new Blob([JSON.stringify(j)],{type:"application/geo+json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name.replace(/\.(geo)?json$/i,"")+"-ringan.geojson";document.body.appendChild(a);a.click();a.remove()}
+</script></main></body></html>

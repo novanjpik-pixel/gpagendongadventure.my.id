@@ -1,0 +1,30 @@
+{
+ "type": "FeatureCollection",
+ "name": "template-temuan",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "T-001",
+    "tanggal": "2026-01-31",
+    "provinsi": "Jambi",
+    "kabupaten": "Kerinci",
+    "lokasi": "Nama desa / blok",
+    "jenis": "Pembukaan lahan",
+    "deskripsi": "Uraian singkat temuan",
+    "luas_ha": 1.5,
+    "tingkat": "Sedang",
+    "tim": "Nama tim",
+    "foto": "https://.../foto.jpg",
+    "tautan": "https://.../laporan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.26,
+     -1.97
+    ]
+   }
+  }
+ ]
+}

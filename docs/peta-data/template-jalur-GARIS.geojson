@@ -1,0 +1,32 @@
+{
+ "type": "FeatureCollection",
+ "name": "template-jalur",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "nama": "Nama jalur patroli / sungai / jalan",
+    "tahun": 2026,
+    "panjang_km": 0,
+    "keterangan": ""
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      101.2,
+      -2.0
+     ],
+     [
+      101.3,
+      -2.1
+     ],
+     [
+      101.4,
+      -2.15
+     ]
+    ]
+   }
+  }
+ ]
+}

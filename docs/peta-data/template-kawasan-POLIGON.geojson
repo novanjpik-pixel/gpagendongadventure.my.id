@@ -1,0 +1,43 @@
+{
+ "type": "FeatureCollection",
+ "name": "template-kawasan",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "nama": "Nama kawasan",
+    "fungsi": "Taman Nasional",
+    "provinsi": "Jambi",
+    "luas_ha": 0,
+    "sumber": "Sumber data / tahun"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       101.2,
+       -2.0
+      ],
+      [
+       101.4,
+       -2.0
+      ],
+      [
+       101.4,
+       -2.2
+      ],
+      [
+       101.2,
+       -2.2
+      ],
+      [
+       101.2,
+       -2.0
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}
