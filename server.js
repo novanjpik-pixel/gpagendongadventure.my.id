@@ -1,0 +1,41 @@
+const http = require("http");
+const cluster = require("cluster");
+const os = require("os");
+require("dotenv/config");
+const express = require("express");
+const next = require("next");
+const path = require("path");
+
+const dev = process.env.NODE_ENV !== "production";
+const port = process.env.PORT || 3000;
+
+function server() {
+  const app = express();
+  const httpServer = http?.createServer(app);
+
+  app?.use(express?.static("public"));
+
+  const DATA_DIR = path?.resolve("data");
+
+  // Serve the /data directory statically
+  app?.use("/data", express?.static(DATA_DIR));
+
+  const nextjs = next({ dev });
+  const handle = nextjs?.getRequestHandler();
+
+  nextjs?.prepare()?.then(() => {
+    app?.all("*", (req, res) => {
+      return handle(req, res);
+    });
+
+    httpServer?.listen(port, () => {
+      console.log(
+        `> Server listening at http://localhost:${port} as ${
+          dev ? "development" : process.env.NODE_ENV
+        }`
+      );
+    });
+  });
+}
+
+server();

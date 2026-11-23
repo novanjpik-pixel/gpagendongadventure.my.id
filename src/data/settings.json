@@ -1,0 +1,37 @@
+{
+  "siteName": "GPA Gendong Adventure",
+  "tagline": "Bentuklah karakter hidup untuk menjadi lebih baik, jagalah alam untuk suatu kehidupan",
+  "description": "Gerakan Pencinta Alam Gendong Adventure Bengkulu — organisasi kepemudaan lingkungan sejak 2015.",
+  "logo": "/assets/images/LAMBANG_GENDONG_ADVENTURE_3_.jpg-removebg-preview-1775145865116.png",
+  "email": "Gendong.Adventure@gmail.com",
+  "phone": "+62 895-2870-5780",
+  "address": "Jl. BTN Blok D/1 RT 07 RW 03, Kel. Timur Indah, Kec. Singaran Pati, Kota Bengkulu",
+  "instagram": "https://instagram.com/GPA_Gendongadventure",
+  "youtube": "",
+  "whatsapp": "https://wa.me/6289528705780",
+  "facebook": "",
+  "aboutText": "GPA Gendong Adventure adalah organisasi kepemudaan di bidang lingkungan yang berdiri pada 22 Agustus 2015 di Bengkulu dan berbadan hukum sejak 2024.",
+  "visionText": "Menjadikan Organisasi GPA Gendong Adventure yang mandiri, memiliki anggota yang berpola pikir luas dan bertanggung jawab terhadap pelestarian lingkungan serta menjunjung tinggi kode etik pecinta alam.",
+  "missionText": "Mendorong keterlibatan masyarakat dalam pelestarian alam, mempererat kekeluargaan, melahirkan kader kritis dan peduli lingkungan, serta menyelenggarakan kegiatan lingkungan di masyarakat.",
+  "established": "22 Agustus 2015",
+  "location": "Bengkulu, Indonesia",
+  "stats": {
+    "members": "85",
+    "expeditions": "39",
+    "yearsActive": "11",
+    "treesPlanted": "1000+"
+  },
+  "donationInfo": {
+    "title": "Dukung kegiatan pelestarian lingkungan dan sosial kami",
+    "description": "Donasi Anda membantu kami menyelenggarakan lebih banyak kegiatan konservasi, aksi sosial, dan program pendidikan lingkungan untuk generasi muda.",
+    "bankAccounts": [],
+    "eWallets": []
+  },
+  "missions": [
+    "Mendorong keterlibatan masyarakat dalam upaya pelestarian alam.",
+    "Menjalin dan mempererat rasa kekeluargaan yang harmonis sesama pecinta alam.",
+    "Melahirkan kader yang berpikir kritis dan peduli terhadap lingkungan.",
+    "Menyelenggarakan berbagai kegiatan terkait pentingnya menjaga lingkungan di tingkat masyarakat."
+  ],
+  "team": []
+}

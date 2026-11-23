@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "title": "Penanaman Mangrove Pesisir Bengkulu",
+    "slug": "penanaman-mangrove-pesisir-bengkulu",
+    "category": "Lingkungan",
+    "date": "2016-03-12",
+    "images": [
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80",
+      "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800&q=80",
+      "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&q=80"
+    ],
+    "description": "Kegiatan penanaman mangrove sebagai upaya pencegahan abrasi dan perlindungan pesisir Bengkulu.",
+    "content": "Sejak awal berdiri, GPA Gendong Adventure aktif dalam kegiatan penanaman mangrove bersama masyarakat pesisir. Kegiatan ini merupakan wujud nyata kepedulian kami terhadap lingkungan pesisir Bengkulu yang terus terancam abrasi. Bersama masyarakat setempat, kami menanam ratusan bibit mangrove di sepanjang garis pantai untuk memperkuat ekosistem pesisir dan melindungi pemukiman warga dari ancaman abrasi.",
+    "featured": true
+  },
+  {
+    "id": "2",
+    "title": "Penanaman 1000 Bibit Mangrove",
+    "slug": "penanaman-1000-bibit-mangrove",
+    "category": "Lingkungan",
+    "date": "2018-07-22",
+    "images": [
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80"
+    ],
+    "description": "Penanaman ribuan bibit mangrove sebagai bentuk kepedulian lingkungan pesisir Bengkulu.",
+    "content": "Dilakukan bersama relawan sebagai bentuk kepedulian lingkungan. Kegiatan penanaman 1000 bibit mangrove ini melibatkan anggota GPA Gendong Adventure bersama relawan dari berbagai komunitas di Bengkulu. Setiap bibit ditanam dengan penuh semangat dan harapan agar pesisir Bengkulu tetap lestari untuk generasi mendatang.",
+    "featured": true
+  },
+  {
+    "id": "3",
+    "title": "Diksar Angkatan VIII",
+    "slug": "diksar-angkatan-viii",
+    "category": "Pendidikan",
+    "date": "2025-02-10",
+    "images": [
+      "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80"
+    ],
+    "description": "Pelatihan dasar anggota baru GPA Gendong Adventure di Bukit Kandis, Bengkulu.",
+    "content": "Materi meliputi survival, navigasi, dan kepemimpinan. Diksar (Pendidikan Dasar) Angkatan VIII merupakan program wajib bagi anggota baru GPA Gendong Adventure. Kegiatan ini dilaksanakan di Bukit Kandis selama beberapa hari dengan materi yang mencakup teknik survival di alam terbuka, navigasi menggunakan peta dan kompas, serta pembentukan jiwa kepemimpinan dan solidaritas antar anggota.",
+    "featured": false
+  },
+  {
+    "id": "4",
+    "title": "FGD Dampak Pertambangan",
+    "slug": "fgd-dampak-pertambangan",
+    "category": "Sosial",
+    "date": "2025-09-07",
+    "images": [
+      "https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?w=800&q=80",
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80"
+    ],
+    "description": "Diskusi bersama akademisi dan masyarakat membahas dampak pertambangan terhadap lingkungan.",
+    "content": "Membahas dampak pertambangan terhadap lingkungan. Forum Group Discussion (FGD) ini menghadirkan akademisi, aktivis lingkungan, dan masyarakat terdampak untuk bersama-sama mendiskusikan dampak aktivitas pertambangan terhadap ekosistem dan kehidupan masyarakat sekitar. GPA Gendong Adventure berperan sebagai fasilitator dalam mendorong dialog yang konstruktif demi solusi yang berkelanjutan.",
+    "featured": false
+  }
+]
