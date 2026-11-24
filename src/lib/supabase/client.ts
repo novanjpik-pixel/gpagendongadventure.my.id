@@ -80,8 +80,9 @@ if (typeof window !== 'undefined' && !(window as any).__sb_patched__) {
 
 export function createClient() {
   return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    // Nilai cadangan agar proses build tidak gagal bila variabel lingkungan belum diisi (isi sebenarnya dibaca saat dijalankan).
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
     {
       cookies: {
         getAll: () => canUseCookies() ? fromCookies() : fromStorage(),
